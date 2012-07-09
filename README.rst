@@ -5,36 +5,36 @@ Clone this repository.
 
 * Not sure why the externals didn't get cloned... git clone https://github.com/tauberer/represent-boundaries.git externals/represent-boundaries .
 
-Install Django and PostgreSQL, and the other dependencies of GeoDjango (https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/). On Ubuntu:
+Install Django and PostgreSQL, and the other dependencies of GeoDjango (https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/). On Ubuntu::
 
   sudo apt-get install binutils gdal-bin libproj-dev postgresql-9.1-postgis \
      postgresql-server-dev-9.1 python-psycopg2 python-django
 
-Install the dependencies of represent-boundaries, which are listed in externals/represent-boundaries/README.rst:
+Install the dependencies of represent-boundaries, which are listed in externals/represent-boundaries/README.rst::
 
   sudo pip install django-appconf django-jsonfield django-tastypie south
   sudo apt-get install python-cairo
 
 Follow GeoDjango's instructions to create a PostGIS spatial database template.
-On Debian/Ubuntu, the script is in this git repo:
+On Debian/Ubuntu, the script is in this git repo::
 
   sudo -u postgres ./create_template_postgis-debian.sh 
 
-Create the database and the database user:
+Create the database and the database user::
 
   sudo -u postgres createdb -T template_postgis boundaries_us
   sudo -u postgres createuser -P boundaries_us
 
-Create a settings_local.py file from the template settings_local.template.py. You'll need to fill in SECRET_KEY. Here's a quick way to generate a new key:
+Create a settings_local.py file from the template settings_local.template.py. You'll need to fill in SECRET_KEY. Here's a quick way to generate a new key::
 
   python -c 'import random; print "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])'
 
-Set up the Django database tables:
+Set up the Django database tables::
 
   python manage.py syncdb
   python manage.py migrate
   
-Verify that everything worked so far:
+Verify that everything worked so far::
 
   python manage.py runserver
   
@@ -43,7 +43,7 @@ And then open http://127.0.0.1:8000/boundary-sets in your web browser. You shoul
 Loading Data
 ------------
 
-Load 2010 congressional district boundaries:
+Load 2010 congressional district boundaries::
 
   cd data/shapefiles/tiger-2010-cd
   wget ftp://ftp.census.gov/geo/tiger/TIGER2011/CD/tl_2011_us_cd112.zip
@@ -56,15 +56,15 @@ This could take about 10 minutes.
 
 The -c option above computes a coloring scheme for each of the polygons in the shapefile for making nice maps. That process take a while. You can omit -c if you aren't going to be displaying maps.
 
-Now run the server again to test:
+Now run the server again to test::
 
   python manage.py runserver
 
-This dataset is loaded as '2010-cd'. Here are some API examples:
+This dataset is loaded as '2010-cd'. Here are some API examples::
 
   http://127.0.0.1:8000/boundary-sets/2010-cd
   
-And you can see the map test page here, which you can adapt to your own needs:
+And you can see the map test page here, which you can adapt to your own needs::
 
    http://127.0.0.1:8000/map/2010-cd
 
