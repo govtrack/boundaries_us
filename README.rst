@@ -5,7 +5,7 @@ boundaries_us
 
 A full Django deployment for represents-boundaries with definitions for U.S.-specific data files.
 
-This project has confusing provenance. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. The Open North guys tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to add map tile generation for use with Google Maps API and OpenLayers/OpenStreetMap.
+This project has confusing provenance. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. The Open North guys tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to add map tile generation for use with Google Maps API and OpenLayers/OpenStreetMap (https://github.com/tauberer/represent-boundaries) and then wrapped it up inside this project which has actual data and deployment details.
 
 Inside you'll find some ready-to-go data:
 
