@@ -5,7 +5,7 @@
 #
 #     ftp://ftp.census.gov/geo/tiger/TIGER2011/CD/tl_2011_us_cd112.zip
 #
-# into [project_dir]/data/shapefiles. Then run:
+# into this directory. Then run:
 #
 #     python manage.py loadshapefiles
 #
