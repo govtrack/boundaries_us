@@ -1,0 +1,3 @@
+[submodule "externals/represent-boundaries"]
+	path = externals/represent-boundaries
+	url = https://github.com/tauberer/represent-boundaries.git
