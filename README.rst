@@ -1,3 +1,22 @@
+=============
+boundaries_us
+=============
+
+
+A full Django deployment for represents-boundaries with definitions for U.S.-specific data files.
+
+This project has confusing provenance. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. The Open North guys tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to add map tile generation for use with Google Maps API and OpenLayers/OpenStreetMap.
+
+Inside you'll find some ready-to-go data:
+
+* A ready-to-go definition file for loading the 2010 Census's congressional districts data (which are about to go out of date).
+
+* The 2012 redistricting shapefiles collected by the Statistical Reform in Redistricting (SRR) Project (http://www.srrproject.org/resources/redistricting-shapefiles/) and the Brennan Center for Justice at NYU, which in turn were originally created by the 50 states. The ZIP files are included in the repository because they had to be renamed to be consistent and some had to be modified to fix the names of files within the ZIP files.
+
+* A definition file for SRR's 2012 redistricting files which figures out how to handle the slightly different naming conventions used in the shapefiles from each state.
+
+The redistricting layer is currently running here: http://gis.govtrack.us/map/2012-cd/
+
 Installation
 ------------
 
