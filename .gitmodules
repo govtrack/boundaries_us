@@ -3,5 +3,4 @@
 	url = https://github.com/tauberer/represent-boundaries.git
 [submodule "externals/represent-maps"]
 	path = externals/represent-maps
-	url = https://github.com/tauberer/represent-maps.git
-
+	url = https://github.com/tauberer/represent-maps
