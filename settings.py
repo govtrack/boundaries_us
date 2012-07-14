@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django.contrib.gis',
     'boundaries',
+    'maps',
     'south',
 )
 
@@ -147,7 +148,7 @@ LOGGING = {
     }
 }
 
-BOUNDARIES_MAP_LABEL_FONT = 'Liberation Sans' # support unicode
+MAPS_MAP_LABEL_FONT = 'Liberation Sans' # support unicode
 
 # Put additional settings in settings_local.py. Namely, you'll probably
 # want to override DATABASES, ADMINS, and MANAGERS and you'll also need

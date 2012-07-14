@@ -67,7 +67,7 @@ Load 2010 congressional district boundaries::
   cd data/shapefiles/tiger-2010-cd
   wget ftp://ftp.census.gov/geo/tiger/TIGER2011/CD/tl_2011_us_cd112.zip
   cd ../../..
-  python manage.py loadshapefiles -c --only 2010-cd
+  python manage.py loadshapefiles --only 2010-cd
 
 This could take about 10 minutes.
   
@@ -85,7 +85,7 @@ This dataset is loaded as '2010-cd'. Here are some API examples::
   
 And you can see the map test page here, which you can adapt to your own needs::
 
-   http://127.0.0.1:8000/map/2010-cd
+   http://127.0.0.1:8000/map/demo/2010-cd
 
 Caching Maps
 ------------

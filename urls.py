@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 	(r'', include('boundaries.urls')),
-	(r'', include('boundaries.map_urls')),
+	(r'', include('maps.urls')),
 	
     # Examples:
     # url(r'^$', 'boundaries_us.views.home', name='home'),
