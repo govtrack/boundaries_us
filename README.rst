@@ -3,9 +3,9 @@ boundaries_us
 =============
 
 
-A full Django deployment for represents-boundaries with definitions for U.S.-specific data files.
+A full Django deployment for [represent-boundaries](https://github.com/tauberer/represent-boundaries) and [represent-maps](https://github.com/tauberer/represent-maps) with definitions for U.S.-specific data files.
 
-This project has confusing provenance. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. The Open North guys tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to add map tile generation for use with Google Maps API and OpenLayers/OpenStreetMap (https://github.com/tauberer/represent-boundaries) and then wrapped it up inside this project which has actual data and deployment details.
+This project has confusing provenance. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. The Open North guys tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to tweak the data import process. I also created a separate new project [represent-maps](https://github.com/tauberer/represent-maps) for creating map tiles for use with Google Maps API and OpenLayers/OpenStreetMap. This project wraps it all up with actual data and deployment details.
 
 Inside you'll find some ready-to-go data:
 
@@ -22,8 +22,6 @@ Installation
 
 Clone this repository.
 
-* Not sure why the externals didn't get cloned... git clone https://github.com/tauberer/represent-boundaries.git externals/represent-boundaries .
-
 Install Django and PostgreSQL, and the other dependencies of GeoDjango (https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/). On Ubuntu::
 
   sudo apt-get install binutils gdal-bin libproj-dev postgresql-9.1-postgis \
@@ -32,6 +30,9 @@ Install Django and PostgreSQL, and the other dependencies of GeoDjango (https://
 Install the dependencies of represent-boundaries, which are listed in externals/represent-boundaries/README.rst::
 
   sudo pip install django-appconf django-jsonfield django-tastypie south
+  
+And likewise for represent-maps, as listed in externals/represent-maps/README.rst::
+
   sudo apt-get install python-cairo
 
 Follow GeoDjango's instructions to create a PostGIS spatial database template.
@@ -73,8 +74,6 @@ This could take about 10 minutes.
   
 (You may get an error "django.db.utils.DatabaseError: invalid byte sequence for encoding "UTF8": 0x00". Postgres 9.1 Django 1.3 do not agree. You can avoid this by editing /etc/postgresql/9.1/main/postgresql.conf and setting standard_conforming_strings = off, and then restart postgresql. See https://code.djangoproject.com/ticket/16778.)
 
-The -c option above computes a coloring scheme for each of the polygons in the shapefile for making nice maps. That process take a while. You can omit -c if you aren't going to be displaying maps.
-
 Now run the server again to test::
 
   python manage.py runserver
@@ -83,7 +82,11 @@ This dataset is loaded as '2010-cd'. Here are some API examples::
 
   http://127.0.0.1:8000/boundary-sets/2010-cd
   
-And you can see the map test page here, which you can adapt to your own needs::
+Create a map layer with automatically assigned colors to each district::
+	
+  python manage.py create-layer -c 2010-cd
+  
+You can then see the map test page here, which you can adapt to your own needs::
 
    http://127.0.0.1:8000/map/demo/2010-cd
 
@@ -95,6 +98,5 @@ You are responsible for caching the map tiles generated for maps. It's best to c
 Not Using Maps?
 ---------------
 
-You should comment out the boundaries.map_urls entry in urls.py. The map tile generating view is computationally expensive, so you shouldn't expose it if you aren't going to implement caching.
-
+You should comment out the maps.urls entry in urls.py. The map tile generating view is computationally expensive, so you shouldn't expose it if you aren't going to implement caching.
 
