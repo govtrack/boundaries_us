@@ -28,7 +28,6 @@ state_fips_codes = {
 def get_feature_name(mode):
 	def g(feature):
 		global state_fips_codes
-		global seen_districts
 		
 		state = state_fips_codes[int(feature.get("STATEFP"))]
 		cd = int(feature.get("CD112FP"))

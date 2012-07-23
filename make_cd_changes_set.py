@@ -6,7 +6,6 @@ from datetime import date
 from django.contrib.gis.geos import MultiPolygon, Polygon
 
 from boundaries.models import *
-from boundaries.management.commands.loadshapefiles import Command as LoadShapefiles
 
 bset_2010 = BoundarySet.objects.get(slug="2010-cd")
 bset_2012 = BoundarySet.objects.get(slug="2012-cd")
@@ -22,6 +21,7 @@ for _b in bset_2010.boundaries.filter(slug__endswith="-00").values_list("slug", 
 
 SLUGS = ("cd-changes", "cd-unified")
 
+MapLayer.objects.filter(slug__in=SLUGS).delete()
 BoundarySet.objects.filter(slug__in=SLUGS).delete()
 
 bset_changes = BoundarySet.objects.create(
@@ -156,31 +156,47 @@ for _bdry2012 in bset_2012.boundaries.order_by("slug").values_list('slug', flat=
 				simple_shape=simple_geometry.wkt,
 				centroid=geometry.centroid,
 				extent=geometry.extent,
-				color=[255,0,0],
 				)
 
-#LoadShapefiles.assign_colors(bset_unified)
+# Create map layers
+
+ml_changes = MapLayer.objects.create(
+              slug=bset_changes.slug,
+              boundaryset=bset_changes,
+              name=bset_changes.name,
+              last_updated=bset_changes.last_updated)
+
+ml_unified = MapLayer.objects.create(
+              slug=bset_unified.slug,
+              boundaryset=bset_unified,
+              name=bset_unified.name,
+              last_updated=bset_unified.last_updated)
+
+for bdry in bset_changes.boundaries.values_list('id', flat=True):
+    MapLayerBoundary.objects.create(
+           maplayer=ml_changes,
+           boundary_id=bdry,
+           color=[255,0,0])
 
 # Assign colors to the unified map based on the colors assigned
 # to the corresponding 2010 boundaries.
-#bset_unified = BoundarySet.objects.get(slug="cd-unified")
-for _b in bset_unified.boundaries.values_list("slug", flat=True):
-	n0, n1 = _b.split("__") if "__" in _b else (_b, _b) # at-large are set without __
+for id, slug in bset_unified.boundaries.values_list("id", "slug"):
+	n0, n1 = slug.split("__") if "__" in slug else (slug, slug) # at-large are set without __
+
+	b1 = MapLayerBoundary.objects.get(maplayer__slug="2010-cd", boundary__slug=n0)
 	
-	b0 = bset_2010.boundaries.get(slug=n0)
-	b1 = bset_unified.boundaries.get(slug=_b)
-	b1.color = b0.color
+	try:
+		b2 = MapLayerBoundary.objects.get(maplayer__slug="2012-cd", boundary__slug=n1)
+	except MapLayerBoundary.DoesNotExist:
+		# District # is new.
+		b2 = None
 	
-	if n0 != n1:
-		# If the district changed, assign a special color value
-		# that includes the from and to colors. For new districts,
-		# use white as the 2nd color.
-		try:
-			b2 = bset_2010.boundaries.get(slug=n1)
-			b1.color = { "mode": "stripes-small", "color1": b0.color, "color2": b2.color } 
-		except Boundary.DoesNotExist:
-			b1.color = { "mode": "stripes-small", "color1": b0.color, "color2": (255,255,255) }
+	color = { "mode": "stripes-small", "color1": b1.color, "color2": b2.color if b2 else [255,255,255] } 
 	
-	b1.save()
+    MapLayerBoundary.objects.create(
+           maplayer=ml_unified,
+           boundary_id=id,
+           color=color)
+	
 
 

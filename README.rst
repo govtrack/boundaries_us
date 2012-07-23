@@ -3,9 +3,9 @@ boundaries_us
 =============
 
 
-A full Django deployment for [represent-boundaries](https://github.com/tauberer/represent-boundaries) and [represent-maps](https://github.com/tauberer/represent-maps) with definitions for U.S.-specific data files.
+A full Django deployment for represent-boundaries (https://github.com/tauberer/represent-boundaries) and represent-maps (https://github.com/tauberer/represent-maps) with definitions for U.S.-specific data files.
 
-This project has confusing provenance. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. The Open North guys tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to tweak the data import process. I also created a separate new project [represent-maps](https://github.com/tauberer/represent-maps) for creating map tiles for use with Google Maps API and OpenLayers/OpenStreetMap. This project wraps it all up with actual data and deployment details.
+This project has a complicated history. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. The OpenNorth guys tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to tweak the data import process (pull request pending). I also created a separate new project represent-maps (https://github.com/tauberer/represent-maps) for creating map tiles for use with Google Maps API and OpenLayers/OpenStreetMap. This project wraps it all up with actual data and deployment details.
 
 Inside you'll find some ready-to-go data:
 
@@ -15,7 +15,7 @@ Inside you'll find some ready-to-go data:
 
 * A definition file for SRR's 2012 redistricting files which figures out how to handle the slightly different naming conventions used in the shapefiles from each state.
 
-The redistricting layer is currently running here: http://gis.govtrack.us/map/2012-cd/
+The redistricting layer is currently running here: http://gis.govtrack.us/map/demo/2010-cd/
 
 Installation
 ------------
@@ -38,7 +38,7 @@ And likewise for represent-maps, as listed in externals/represent-maps/README.rs
 Follow GeoDjango's instructions to create a PostGIS spatial database template.
 On Debian/Ubuntu, the script is in this git repo::
 
-  sudo -u postgres ./create_template_postgis-debian.sh 
+  sudo -u postgres misc/create_template_postgis-debian.sh 
 
 Create the database and the database user::
 
