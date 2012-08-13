@@ -58,7 +58,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.dirname(__file__) + '/static'
+STATIC_ROOT = os.path.dirname(__file__) + '/static_collected'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -74,6 +74,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.dirname(__file__) + '/static',
 )
 
 # List of finder classes that know how to find static files in
@@ -149,6 +150,7 @@ LOGGING = {
 }
 
 MAPS_MAP_LABEL_FONT = 'Liberation Sans' # support unicode
+MAPS_MAP_TILE_CACHE_SECONDS = 60*60*24*7 # seven days
 
 # Put additional settings in settings_local.py. Namely, you'll probably
 # want to override DATABASES, ADMINS, and MANAGERS and you'll also need
