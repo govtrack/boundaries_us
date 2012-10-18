@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+
+try:
+	import prctl, os
+	prctl.set_name(os.environ["NAME"] + "-django")
+except:
+	pass
+
 from django.core.management import execute_manager
 import imp
 try:
