@@ -12,12 +12,12 @@
 #
 # Finally, to load:
 #
-# python manage.py loadshapefiles -c -r --only 2012-cd
+# python manage.py loadshapefiles -r --only 2012-cd
 #
 # Last I checked the SRR website (2012-07-08), only Rhode Island was missing data.
 # Michigan uses a projection that isn't properly supported by GDAL tools
 # so a script is provided to project the coordinates to WGS84 using proj4
-$ first before loading them into the database.
+# first before loading them into the database.
 
 
 from datetime import date
