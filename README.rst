@@ -74,9 +74,10 @@ This could take about 10 minutes.
   
 (You may get an error "django.db.utils.DatabaseError: invalid byte sequence for encoding "UTF8": 0x00". Postgres 9.1 Django 1.3 do not agree. You can avoid this by editing /etc/postgresql/9.1/main/postgresql.conf and setting standard_conforming_strings = off, and then restart postgresql. See https://code.djangoproject.com/ticket/16778.)
 
-Now run the server again to test::
+Now run the server again to test (this time we'll need static files, and DEBUG is required to serve them)::
 
-  python manage.py runserver
+  python manage.py collectstatic
+  DEBUG=1 python manage.py runserver
 
 This dataset is loaded as '2010-cd'. Here are some API examples::
 
