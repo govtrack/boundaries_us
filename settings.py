@@ -109,6 +109,10 @@ TEMPLATE_DIRS = (
     os.path.dirname(__file__) + '/templates',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+	'django.core.context_processors.request',
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
