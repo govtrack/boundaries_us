@@ -101,3 +101,47 @@ Not Using Maps?
 
 You should comment out the maps.urls entry in urls.py. The map tile generating view is computationally expensive, so you shouldn't expose it if you aren't going to implement caching.
 
+Nginx Configuration
+---------------
+
+I'm using the following nginx configuration to serve this site at gis.govtrack.us. It enables caching and gzip compression in useful ways::
+	
+	fastcgi_cache_path  /tmp/nginx-cache/gis.govtrack.us  levels=1:2 keys_zone=gis.govtrack.us:100m inactive=72h max_size=1g;
+	
+	server {
+		listen   [::]:80;
+		
+		server_name gis.govtrack.us;
+	
+		root /home/govtrack/boundaries_us/static;
+	
+		location /media/ {
+			alias /home/govtrack/boundaries_us/media/;
+			expires 3d;
+			}
+		location /static/ {
+			alias /home/govtrack/boundaries_us/static_collected/;
+			expires 3d;
+			}
+	
+		location / {
+			include fastcgi_params;
+			fastcgi_split_path_info ^()(.*)$;
+			fastcgi_pass localhost:3008;
+			fastcgi_read_timeout 20s;
+			fastcgi_cache gis.govtrack.us;
+			fastcgi_cache_key "$scheme$request_method$host$request_uri";
+			fastcgi_cache_valid 200 3d;
+			fastcgi_cache_valid 301 1d;
+			fastcgi_cache_valid any 1m;
+			fastcgi_cache_use_stale  error timeout invalid_header updating
+							  http_500 http_503;
+			fastcgi_no_cache $arg_nocache;
+		}
+	
+		gzip             on;
+		gzip_min_length  1000;
+		gzip_types       text/plain application/xml application/json;
+		gzip_disable     "MSIE [1-6]\.";
+	}
+
