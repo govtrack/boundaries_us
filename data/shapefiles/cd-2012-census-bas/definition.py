@@ -11,10 +11,18 @@
 #
 #     ./fetch.sh
 #
+# which downloads the files into a data directory and then unzips
+# just the congressional district shapefiles (among other shapefiles)
+# from the zip files into the current directory.
+#
 # Then run:
 #
-#     python manage.py loadshapefiles -c -r --only cd-2012-census-bas
+#     python manage.py loadshapefiles -c -r --only cd-2012
+#     python manage.py create-layer -c cd-2012
 #
+# During load the shapefiles will be cleaned with ogr2ogr, generating
+# new shapefiles with _cleaned_ in their names. Delete these after,
+# and definitely before you try to re-load the data again.
 
 from datetime import date
 
@@ -36,14 +44,15 @@ def get_feature_name(mode):
 		global state_fips_codes
 		
 		state = state_fips_codes[int(feature.get("STATEFP"))]
+		district = feature.get("CDFP")
 		
-		if feature.get("CDFP") == "ZZ":
+		if district == "ZZ":
 			# "areas with no congressional district defined (usually large water bodies)"
 			return False
 		if mode == "valid":
 			return True
 		
-		cd = int(feature.get("CDFP"))
+		cd = int(district)
 		if cd in (98, 99): # Census's convention for non-state territories
 			cd = 0 # Our convention for all at-large districts
 			
