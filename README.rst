@@ -2,25 +2,23 @@
 boundaries_us
 =============
 
+See the live demo of this project at http://gis.govtrack.us/map/demo/cd-2012/.
 
-A full Django deployment for represent-boundaries (https://github.com/tauberer/represent-boundaries) and represent-maps (https://github.com/tauberer/represent-maps) with definitions for U.S.-specific data files.
+This project creates an API and map tile layers for geospatial data. It lets you easily go from shapefiles (of, say, political boundaries) to an API that can answer questions like what district is a coordinate in and which districts touch, and can create pretty Google Maps/OSM maps with those boundaries outlined.
 
-This project has a complicated history. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. The OpenNorth guys tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to tweak the data import process (pull request pending). I also created a separate new project represent-maps (https://github.com/tauberer/represent-maps) for creating map tiles for use with Google Maps API and OpenLayers/OpenStreetMap. This project wraps it all up with actual data and deployment details.
+This is a full Django deployment of two other projects --- represent-boundaries (https://github.com/tauberer/represent-boundaries) and represent-maps (https://github.com/tauberer/represent-maps) --- plus examples of how to load in some U.S.-specific data files such as 2012 congressional districts. You might need a little familiarity with Django to get this to work.
 
-Inside you'll find some ready-to-go data:
+This project has a complicated history. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. OpenNorth tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to tweak the data import process, and I created a separate new project represent-maps for creating map tiles for use with Google Maps API and OpenLayers/OpenStreetMap. This project, boundaries_us, wraps it all up with actual data and deployment details.
 
-* A ready-to-go definition file for loading the 2010 Census's congressional districts data (which are about to go out of date).
+Inside you'll find some ready-to-go data: 2012 U.S. congressional districts, U.S. state boundaries, and District of Columbia Ward/ANC/SMD boundaries. The purpose of this project is to show you how you can deploy a similar site for whatever data you have.
 
-* The 2012 redistricting shapefiles collected by the Statistical Reform in Redistricting (SRR) Project (http://www.srrproject.org/resources/redistricting-shapefiles/) and the Brennan Center for Justice at NYU, which in turn were originally created by the 50 states. The ZIP files are included in the repository because they had to be renamed to be consistent and some had to be modified to fix the names of files within the ZIP files.
-
-* A definition file for SRR's 2012 redistricting files which figures out how to handle the slightly different naming conventions used in the shapefiles from each state.
-
-The redistricting layer is currently running here: http://gis.govtrack.us/map/demo/2010-cd/
 
 Installation
 ------------
 
-Clone this repository.
+So far this has only been tested on Ubuntu 11.10. I expect it will work fine on newer updates. It may be harder to install on other distributions as python-cairo might not be packaged up for you as it is in Ubuntu.
+
+Start by cloning this repository.
 
 Install Django and PostgreSQL, and the other dependencies of GeoDjango (https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/). On Ubuntu::
 
@@ -49,6 +47,8 @@ Create a settings_local.py file from the template settings_local.template.py. Yo
 
   python -c 'import random; print "".join([random.choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)])'
 
+And tweak the other settings, such as the database credientials, if needed.
+  
 Set up the Django database tables::
 
   python manage.py syncdb
@@ -63,14 +63,14 @@ And then open http://127.0.0.1:8000/boundary-sets in your web browser. You shoul
 Loading Data
 ------------
 
-Load 2010 congressional district boundaries::
+Load 2012 congressional district boundaries::
 
-  cd data/shapefiles/tiger-2010-cd
-  wget ftp://ftp.census.gov/geo/tiger/TIGER2011/CD/tl_2011_us_cd112.zip
+  cd data/shapefiles/cd-2012-census-bas/
+  ./fetch
   cd ../../..
-  python manage.py loadshapefiles --only 2010-cd
+  python manage.py loadshapefiles -c -r --only cd-2012
 
-This could take about 10 minutes.
+This will take a little bit of time.
   
 (You may get an error "django.db.utils.DatabaseError: invalid byte sequence for encoding "UTF8": 0x00". Postgres 9.1 Django 1.3 do not agree. You can avoid this by editing /etc/postgresql/9.1/main/postgresql.conf and setting standard_conforming_strings = off, and then restart postgresql. See https://code.djangoproject.com/ticket/16778.)
 
@@ -79,17 +79,17 @@ Now run the server again to test (this time we'll need static files, and DEBUG i
   python manage.py collectstatic
   DEBUG=1 python manage.py runserver
 
-This dataset is loaded as '2010-cd'. Here are some API examples::
+This dataset is loaded as 'cd-2012'. Here are some API examples::
 
-  http://127.0.0.1:8000/boundary-sets/2010-cd
+  http://127.0.0.1:8000/boundary-sets/cd-2012
   
 Create a map layer with automatically assigned colors to each district::
 	
-  python manage.py create-layer -c 2010-cd
+  python manage.py create-layer -c cd-2012
   
 You can then see the map test page here, which you can adapt to your own needs::
 
-   http://127.0.0.1:8000/map/demo/2010-cd
+   http://127.0.0.1:8000/map/demo/cd-2012
 
 Caching Maps
 ------------
