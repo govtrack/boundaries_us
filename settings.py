@@ -13,12 +13,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'boundaries_us',                      # Or path to database file if using sqlite3.
-        'USER': 'boundaries_us',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': 'localhost',             # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.contrib.gis.db.backends.postgis', # this is the only backend with full GIS support
+        'NAME': 'boundaries_us',
+        'USER': 'boundaries_us',
+        'PASSWORD': '', # override this in settings_local.py.
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -112,6 +112,7 @@ TEMPLATE_DIRS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.core.context_processors.request',
     'django.core.context_processors.static',
+    'django.contrib.auth.context_processors.auth',
 )
 
 INSTALLED_APPS = (
@@ -127,7 +128,6 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'boundaries',
     'maps',
-    'south',
 )
 
 # A sample logging configuration. The only tangible logging

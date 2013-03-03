@@ -18,7 +18,9 @@ Installation
 
 So far this has only been tested on Ubuntu 11.10. I expect it will work fine on newer updates. It may be harder to install on other distributions as python-cairo might not be packaged up for you as it is in Ubuntu.
 
-Start by cloning this repository.
+Start by cloning this repository. You'll need to clone it using the --recursive flag so that the dependencies get cloned as submodules.
+
+  git clone --recursive https://github.com/tauberer/boundaries_us
 
 Install Django and PostgreSQL, and the other dependencies of GeoDjango (https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/). On Ubuntu::
 
@@ -52,7 +54,6 @@ And tweak the other settings, such as the database credientials, if needed.
 Set up the Django database tables::
 
   python manage.py syncdb
-  python manage.py migrate
   
 Verify that everything worked so far::
 
@@ -106,7 +107,7 @@ Nginx Configuration
 
 I'm using the following nginx configuration to serve this site at gis.govtrack.us. It enables caching and gzip compression in useful ways::
 	
-	fastcgi_cache_path  /tmp/nginx-cache/gis.govtrack.us  levels=1:2 keys_zone=gis.govtrack.us:100m inactive=72h max_size=1g;
+	fastcgi_cache_path  /tmp/nginx-cache-gis.govtrack.us  levels=1:2 keys_zone=gis.govtrack.us:100m inactive=72h max_size=1g;
 	
 	server {
 		listen   [::]:80;
@@ -137,6 +138,7 @@ I'm using the following nginx configuration to serve this site at gis.govtrack.u
 			fastcgi_cache_use_stale  error timeout invalid_header updating
 							  http_500 http_503;
 			fastcgi_no_cache $arg_nocache;
+			fastcgi_cache_bypass $arg_nocache;
 		}
 	
 		gzip             on;
