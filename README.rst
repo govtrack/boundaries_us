@@ -18,7 +18,7 @@ You'll need Ubuntu 11.10 (or later) and Django 1.5::
 
   sudo pip install --upgrade "django>=1.5,<=1.6"
 
-Start by cloning this repository. You'll need to clone it using the --recursive flag so that the dependencies get cloned as submodules.
+Start by cloning this repository. You'll need to clone it using the --recursive flag so that the dependencies get cloned as submodules::
 
   git clone --recursive https://github.com/tauberer/boundaries_us
 
