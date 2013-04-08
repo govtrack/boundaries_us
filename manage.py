@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!.env/bin/python
 
 try:
 	import prctl, os

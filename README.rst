@@ -6,9 +6,7 @@ See the live demo of this project at http://gis.govtrack.us/map/demo/cd-2012/.
 
 This project creates an API and map tile layers for geospatial data. It lets you easily go from shapefiles (of, say, political boundaries) to an API that can answer questions like what district is a coordinate in and which districts touch, and can create pretty Google Maps/OSM maps with those boundaries outlined.
 
-This is a full Django deployment of two other projects --- represent-boundaries (https://github.com/tauberer/represent-boundaries) and represent-maps (https://github.com/tauberer/represent-maps) --- plus examples of how to load in some U.S.-specific data files such as 2012 congressional districts. You might need a little familiarity with Django to get this to work.
-
-This project has a complicated history. The Chicago Tribune created django-boundaryservice (http://github.com/newsapps/django-boundaryservice), a framework for creating an API around shapefiles. OpenNorth tweaked it in a separate fork (https://github.com/rhymeswithcycle/represent-boundaries). Then I forked the fork to tweak the data import process, and I created a separate new project represent-maps for creating map tiles for use with Google Maps API and OpenLayers/OpenStreetMap. This project, boundaries_us, wraps it all up with actual data and deployment details.
+This is a full Django deployment of two other projects --- represent-boundaries by OpenNorth (https://github.com/rhymeswithcycle/represent-boundaries) and represent-maps (https://github.com/tauberer/represent-maps), which I created --- plus examples of how to load in some U.S.-specific data files such as 2012 congressional districts. You might need a little familiarity with Django to get this to work.
 
 Inside you'll find some ready-to-go data: 2012 U.S. congressional districts, U.S. state boundaries, and District of Columbia Ward/ANC/SMD boundaries. The purpose of this project is to show you how you can deploy a similar site for whatever data you have.
 
@@ -16,24 +14,27 @@ Inside you'll find some ready-to-go data: 2012 U.S. congressional districts, U.S
 Installation
 ------------
 
-So far this has only been tested on Ubuntu 11.10. I expect it will work fine on newer updates. It may be harder to install on other distributions as python-cairo might not be packaged up for you as it is in Ubuntu.
+You'll need Ubuntu 11.10 (or later) and Django 1.5::
+
+  sudo pip install --upgrade "django>=1.5,<=1.6"
 
 Start by cloning this repository. You'll need to clone it using the --recursive flag so that the dependencies get cloned as submodules.
 
   git clone --recursive https://github.com/tauberer/boundaries_us
 
-Install Django and PostgreSQL, and the other dependencies of GeoDjango (https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/). On Ubuntu::
+Install PostgreSQL and the other dependencies of GeoDjango (https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/). On Ubuntu::
 
   sudo apt-get install binutils gdal-bin libproj-dev postgresql-9.1-postgis \
-     postgresql-server-dev-9.1 python-psycopg2 python-django
+     postgresql-server-dev-9.1 python-psycopg2
 
-Install the dependencies of represent-boundaries, which are listed in externals/represent-boundaries/README.rst::
+Install the dependencies of represent-boundaries, which at the time of writing are::
 
-  sudo pip install django-appconf django-jsonfield django-tastypie south
+  sudo pip install django-appconf django-jsonfield south
   
 And likewise for represent-maps, as listed in externals/represent-maps/README.rst::
 
   sudo apt-get install python-cairo
+  (python-cairo is only readily available in Ubuntu)
 
 Follow GeoDjango's instructions to create a PostGIS spatial database template.
 On Debian/Ubuntu, the script is in this git repo::
