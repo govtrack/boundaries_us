@@ -29,7 +29,7 @@ Install PostgreSQL and the other dependencies of GeoDjango (https://docs.djangop
 
 Install the dependencies of represent-boundaries, which at the time of writing are::
 
-  sudo pip install django-appconf django-jsonfield south
+  sudo pip install django-appconf django-jsonfield south pil
   
 And likewise for represent-maps, as listed in externals/represent-maps/README.rst::
 
