@@ -68,7 +68,7 @@ Loading Data
 Load 2012 congressional district boundaries::
 
   cd data/shapefiles/cd-2012-census-bas/
-  ./fetch
+  ./fetch.sh
   cd ../../..
   python manage.py loadshapefiles -c -r --only cd-2012
 
